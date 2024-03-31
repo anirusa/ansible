@@ -1,0 +1,39 @@
+- name: Install httpd (Amazon Linux/RHEL)
+  package:
+    name: httpd
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install apache2 (Ubuntu/Debian)
+  package:
+    name: apache2
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Start and enable web server
+  service:
+    name: "{{ httpd_service }}"
+    state: started
+    enabled: yes
+  vars:
+    httpd_service: "{{ 'httpd' if ansible_os_family == 'RedHat' else 'apache2' }}"
+
+- name: Deploy static webpage
+  template:
+    src: index.j2
+    dest: /var/www/html/index.html
+    mode: 0555 
+
+- name: Ensure web content directory exists
+  file:
+    path: /var/www/html/images
+    state: directory
+    mode: 0755  
+
+- name: Copy the images
+  copy:
+    src: "{{ role_path }}/files/{{ item }}" 
+    dest: /var/www/html/images/
+    mode: 0555 
+  loop: "{{ image_files }}"
+  

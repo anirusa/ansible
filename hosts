@@ -1,0 +1,13 @@
+[webservers]
+webserver1-ubuntu ansible_host=34.230.60.20
+webserver2-ubuntu ansible_host=44.201.17.244
+webserver1-al ansible_host=52.202.115.30
+webserver2-al ansible_host=3.239.210.32
+
+[webservers-ubuntu]
+webserver1-ubuntu
+webserver2-ubuntu
+
+[webservers-al]
+webserver1-al
+webserver2-al
